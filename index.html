@@ -32,7 +32,7 @@ h1,h2,h3,.serif{font-family:'Playfair Display',Georgia,serif}
 .prose p{margin:.2rem 0 .9rem;line-height:1.7}.prose ul{margin:0 0 1rem;padding-left:0;list-style:none}
 .prose li{padding:.55rem .8rem;margin-bottom:.5rem;background:var(--soft);border-left:4px solid var(--gold);border-radius:.4rem;line-height:1.55}
 .prose h4{font-weight:700;color:var(--tl);margin:1rem 0 .5rem;font-size:1.05rem}
-.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:.6rem;margin-bottom:1rem}
+.gal{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:.9rem;margin-bottom:1.2rem}
 .gal button{aspect-ratio:4/3;border-radius:.6rem;overflow:hidden;border:1px solid var(--line);cursor:zoom-in}
 .gal img{width:100%;height:100%;object-fit:cover;transition:.3s}.gal button:hover img{transform:scale(1.07)}
 .ov{position:fixed;inset:0;z-index:70;display:none;background:rgba(8,16,30,.8);padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
@@ -164,7 +164,7 @@ input:checked+.pill{background:var(--teal);color:#fff;border-color:var(--teal)}
   <div class="p-4 md:p-6 space-y-5">
    <div id="mVid" class="relative aspect-video rounded-xl overflow-hidden" style="border:2px solid var(--tl);box-shadow:0 0 36px -8px rgba(0,200,200,.55)"></div>
    <a id="ytL" target="_blank" rel="noopener" class="mono text-xs accent" style="display:none"></a>
-   <div class="flex items-center gap-3 flex-wrap"><img data-logo alt="" class="h-10 w-10 object-contain"><div class="flex-1 min-w-0"><div class="font-semibold">Parroquial Quezaltepeque</div><div class="mono text-xs" style="color:var(--muted)">@parroquialquezaltepeque</div></div><a class="btn gold" style="padding:.5rem 1rem" href="https://www.youtube.com/@parroquialquezaltepeque" target="_blank" rel="noopener" data-i="sub">Suscribirse</a></div>
+   <div id="chRow" class="flex items-center gap-3 flex-wrap"><img data-logo alt="" class="h-10 w-10 object-contain"><div class="flex-1 min-w-0"><div class="font-semibold">Parroquial Quezaltepeque</div><div class="mono text-xs" style="color:var(--muted)">@parroquialquezaltepeque</div></div><a class="btn gold" style="padding:.5rem 1rem" href="https://www.youtube.com/@parroquialquezaltepeque" target="_blank" rel="noopener" data-i="sub">Suscribirse</a></div>
    <div id="mBody" class="prose"></div>
   </div>
   <div class="flex justify-between gap-3 px-4 pb-5">
@@ -222,7 +222,7 @@ function renderGrid(){const u=UI[lang],q=($('#q').value||'').toLowerCase().trim(
  const L=ST.map((s,i)=>[s,i]).filter(([s])=>!q||(s.t[lang]+' '+s.n).toLowerCase().includes(q));
  $('#grid').innerHTML=L.length?L.map(([s,i])=>`<button class="tcard ${seen.has(i)?'vis':''}" onclick="openM(${i})"><span class="scan"></span><span class="glare"></span><div class="cover">${s.imgs.length?`<img src="${IMG[s.imgs[0]]}" alt="" loading="lazy">`:`<span aria-hidden="true">${s.icon}</span>`}<span class="num mono">${i===10?'EXTRA':'ST-'+s.n}</span><span class="chk">✓</span></div><div class="p-4"><h3 class="orb font-bold text-base leading-snug">${s.t[lang]}</h3><span class="mono text-xs accent mt-3 inline-block">${u.see}</span></div></button>`).join(''):`<p class="col-span-full text-center mono" style="color:var(--muted)">${u.none}</p>`;
  $('#prog').style.width=seen.size/ST.length*100+'%';$('#progT').textContent=`${u.expl}: ${seen.size}/${ST.length}`}
-function renderM(){const s=ST[cur];$('#mNum').textContent=s.n;$('#mTitle').textContent=s.t[lang];loadVideo($('#mVid'),ST[cur].n);setYT($('#ytL'),ST[cur].n);
+function renderM(){const s=ST[cur];$('#mNum').textContent=s.n;$('#mTitle').textContent=s.t[lang];const nv=s.n==='Extra';$('#mVid').style.display=nv?'none':'';$('#chRow').style.display=nv?'none':'';if(nv){$('#mVid').innerHTML='';$('#ytL').style.display='none'}else{loadVideo($('#mVid'),s.n);setYT($('#ytL'),s.n)}
  $('#mBody').innerHTML=blocks(s[lang])+(s.imgs.length?gal(s.imgs):'')}
 function openM(i){cur=i;seen.add(i);renderGrid();renderM();$('#modal').classList.add('open');document.body.style.overflow='hidden';$('#modal .overflow-y-auto').scrollTop=0}
 function closeM(){$('#modal').classList.remove('open');$('#mVid').innerHTML='';document.body.style.overflow=''}
